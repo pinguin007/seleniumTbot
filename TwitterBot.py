@@ -1,5 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.common.action_chains import ActionChains
 import time
 
 bot= webdriver.Firefox()
@@ -46,18 +48,31 @@ def followppl():
     
     counter=0
     scroll=0
-    while(counter <= int_num_followers):
-       
+    while(1):
+   
         friends= bot.find_element_by_css_selector("div.r-1tlfku8:nth-child(1)").find_elements_by_xpath("//span[text()='Follow']")
         
         for i in friends:
-            print(i.get_attribute('innerHTML'))
-            counter+=1
-            print(counter)
-        bot.execute_script("window.scrollTo({}, document.body.scrollHeight)").format(scroll)
-        scroll=bot.execute_script("return document.body.scrollHeight")
-        #time.sleep(2)
+            try:
+                if counter >= int(num_followers):
+                    break
+                ActionChains(bot).move_to_element(i).click().perform()
+                #i.click()
+                time.sleep(1)
+                """print(i.get_attribute('innerHTML'))
+                counter+=1
+                print(counter)"""
 
+            except StaleElementReferenceException as Exception:
+                print('StaleElementReferenceException while trying to get follow button, trying to find element again')
+        
+        scroll=bot.execute_script("return document.body.scrollHeight")
+
+        bot.execute_script("window.scrollTo({}, document.body.scrollHeight)".format(scroll))
+        
+        time.sleep(3)
+        if counter >= int(num_followers):
+                    break
     '''while(counter < int_num_followers):
         firstUserfollowers= bot.find_element_by_css_selector("div.r-1tlfku8:nth-child(1)")
         fuf2= firstUserfollowers.find_elements_by_class_name("css-1dbjc4n.r-my5ep6.r-qklmqi.r-1adg3ll")
@@ -107,5 +122,5 @@ bot.close()
 
 ##NOTE: use find element css class joining rule to find specific class within a class by joining spaces with "."
 
-#find_element_by_css_selector("css-901oao css-16my406 r-1qd0xha r-ad9z0x r-bcqeeo r-qvutc0")
-#find_element_in_class("css-1dbjc4n")
+#fix OutofBound error, element is not clickable because it's not scrolled on to the viewpoint
+##NOTE: my guess is to get scrollHeight first, scrape for follow button till the endofPage, click, then repeat
