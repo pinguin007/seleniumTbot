@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.action_chains import ActionChains
 import time
+from search import Search
 
 bot= webdriver.Firefox()
 bot.get("https://www.twitter.com")
@@ -15,13 +16,9 @@ password.send_keys(Keys.ENTER)
 
 time.sleep(7)
 
-def Search(text):
-    bot.get("https://twitter.com/search?q="+text+"&src=typd")
-    time.sleep(6)
+Search(bot,'Kobe')
 
-
-#Search("kobe")
-
+"""
 def followpage():
     profile= bot.find_element_by_link_text("Profile")
     print("{}".format(profile))
@@ -59,10 +56,7 @@ def followppl():
                 ActionChains(bot).move_to_element(i).click().perform()
                 #i.click()
                 time.sleep(1)
-                """print(i.get_attribute('innerHTML'))
-                counter+=1
-                print(counter)"""
-
+                
             except StaleElementReferenceException as Exception:
                 print('StaleElementReferenceException while trying to get follow button, trying to find element again')
         
@@ -73,20 +67,6 @@ def followppl():
         time.sleep(3)
         if counter >= int(num_followers):
                     break
-    '''while(counter < int_num_followers):
-        firstUserfollowers= bot.find_element_by_css_selector("div.r-1tlfku8:nth-child(1)")
-        fuf2= firstUserfollowers.find_elements_by_class_name("css-1dbjc4n.r-my5ep6.r-qklmqi.r-1adg3ll")
-        print(fuf2)
-        for i in range(len(fuf2)):
-            innerText=fuf2[i].find_element_by_xpath("//span[text()='Follow']")
-            #innerText[1].click()
-            print(innerText.get_attribute('innerHTML'))
-            counter+=1
-            print(counter)
-            #time.sleep(2.5)
-        
-        bot.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-        time.sleep(3)'''
 
 def commaRemover(text):
     list_version= list(text)
@@ -124,3 +104,4 @@ bot.close()
 
 #fix OutofBound error, element is not clickable because it's not scrolled on to the viewpoint
 ##NOTE: my guess is to get scrollHeight first, scrape for follow button till the endofPage, click, then repeat
+"""
