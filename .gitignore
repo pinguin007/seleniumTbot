@@ -1,3 +1,4 @@
 *.txt
 *.log
 TwitterBot.py
+/__pycache__
