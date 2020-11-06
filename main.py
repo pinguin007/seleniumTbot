@@ -7,16 +7,18 @@ from followppl import follow_ppl
 from search import Search
 from profileList import myFollowingList
 
+user=input("please enter your username:")
+passkey=input("please enter your password:")
 
 bot= webdriver.Firefox()
 bot.get("https://www.twitter.com")
 login= bot.find_element_by_xpath('//a[@href="/login"]')
 login.click()
 username= bot.find_element_by_name("session[username_or_email]")
-username.send_keys("haneke1091@lercjy.com")
+username.send_keys(user)
 
 password= bot.find_element_by_name("session[password]")
-password.send_keys("777123999Aaa!")
+password.send_keys(passkey)
 password.send_keys(Keys.ENTER)
 
 time.sleep(7)
